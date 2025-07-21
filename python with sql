@@ -1,0 +1,94 @@
+import mysql.connector
+mydb = mysql.connector.connect(user='rajesh', password='Bhavesh192@03', host='localhost', database='employee_db')
+mycursor = mydb.cursor()
+
+print("""Select option from below menu : 
+      1. Get all data of employees table
+      2. Insert data into employees table
+      3. Delete record from employees table
+      4. Update record from employees table
+      5. Search a employee through emp_id
+      6. Promoting and Increasing Salary through emp_id
+      7. Delete all Employee data
+      8. Exit Here...""")
+user_choice = int(input("Enter your choice : "))
+print(f"You have selected option {user_choice} from above choice.")
+
+
+def action_function(argument):
+    match argument:
+        case 1:
+            print("Option selected 1. Get all data of employees table")
+            sql = "SELECT * FROM employees"
+            mycursor.execute(sql)
+            myresult = mycursor.fetchall()
+            for x in myresult:
+                print(x)
+        case 2:
+            print("Option selected 2. Insert data into employees table")
+            sql = "INSERT INTO employees (emp_id, name, email, phone, address, post, salary) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            ui_emp_id = input("Enter your emp_id : ")
+            ui_name = input("Enter your name : ")
+            ui_email = input("Enter your email : ")
+            ui_phone = input("Enter your no. : ")
+            ui_address = input("Enter your add. : ")
+            ui_post = input("Enter you post : ")
+            ui_salary = float(input("Enter your salary : "))
+            val = (ui_emp_id, ui_name, ui_email, ui_phone, ui_address, ui_post, ui_salary)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            print(mycursor.rowcount, "details inserted")
+        case 3:
+            print("Option selected 3. Delete record from employees table")
+            ui_emp_id = int(input("Enter employee id for deleting record from table : "))
+            sql = "DELETE FROM employees WHERE emp_id = %s "
+            print(mycursor.rowcount, " Row Information is Remove.")
+            mycursor.execute(sql, (ui_emp_id,))
+            mydb.commit()
+        case 4:
+            print("Option selected 4. Update record from employees table")
+            ui_emp_id = input("Enter your emp_id : ")
+            ui_salary = float(input("Enter your new salary : "))
+            sql = "UPDATE employees SET salary = %s WHERE emp_id= %s "
+            val = (ui_salary, ui_emp_id)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            print(mycursor.rowcount,"Details are updated")
+
+        case 5:
+            print("Option selected 5. Search a employee through emp_id")
+            ui_emp_id = int(input("Enter emp_id to find employee : "))
+            sql = "SELECT * FROM employees WHERE emp_id = %s"
+            val = (ui_emp_id,)
+            mycursor.execute(sql, val)
+            myresult = mycursor.fetchall()
+            for x in myresult:
+                print(x)
+        case 6:
+            print("Option selected 6. Promoting and Increase Salary through emp_id")
+            ui_emp_id = int(input("Enter Employee emp_id for Salary Increment : "))
+            ui_salary = "SELECT salary FROM employees WHERE emp_id = %s"
+            mycursor.execute(ui_salary, (ui_emp_id,))
+            result = mycursor.fetchone()
+
+            increment = result[0] * 10/100 + result[0]
+            sql = "UPDATE employees SET salary = %s WHERE emp_id = %s "
+
+            val = (increment, ui_emp_id)
+            mycursor.execute(sql, val)
+            mydb.commit()
+            print(mycursor.rowcount, "Employee salary incremented")
+        case 7:
+            print("Option selected 7. Delete all Employee data")
+            sql = "DELETE FROM employees"
+            mycursor.execute(sql)
+            mydb.commit()
+            print(mycursor.rowcount, "Rows data get deleted")
+        case 8:
+            print("Option selected 8. Exit")
+        case default:
+            print("Option Does not Match from given")
+
+
+action_function(user_choice)
+mydb.close()
