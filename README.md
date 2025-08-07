@@ -1,4 +1,3 @@
-# Employee-Management-System
 # 🧑‍💼 Employee Management System (Python + MySQL)
 
 This is a **terminal-based Employee Management System** built using **Python** and **MySQL**. It provides basic operations like inserting, deleting, updating, searching, and promoting employee records in a MySQL database.
@@ -31,5 +30,5 @@ This is a **terminal-based Employee Management System** built using **Python** a
 ### 1. Clone this Repository
 
 ```bash
-git clone https://github.com/your-username/employee-management-system.git
+git clone https://github.com/Rajesh0115/employee-management-system.git
 cd employee-management-system
